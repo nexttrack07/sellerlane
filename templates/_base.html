@@ -1,5 +1,5 @@
-<!DOCTYPE html>
 {% load static tailwind_tags %}
+<!DOCTYPE html>
 <html lang="en">
 
   <head>
@@ -14,7 +14,30 @@
   </head>
 
   <body>
-    {% block content %}{%endblock content%}
+    <div class="w-100 border-b border-black">
+      <nav class="py-8 px-6 container mx-auto flex justify-between items-center">
+        <a href="{% url 'product_list' %}">Products</a>
+        {% if user.is_authenticated %}
+          <span class="inline-block mr-5 last-of-type:mr-0">
+            <a href="{% url 'account_logout' %}">Log Out</a>
+          </span>
+        {% else %}
+          <span>
+            <span class="mr-5 inline-block last-of-type:mr-0">
+              <a href="{% url 'account_signup' %}">Sign Up</a>
+            </span>
+            <span class="mr-5 inline-block last-of-type:mr-0">
+              <a href="{% url 'account_login' %}">Log In</a>
+            </span>
+          </span>
+        {% endif %}
+
+      </nav>
+    </div>
+
+    <main class="md:container mx-auto my-10">
+      {% block content %}{%endblock content%}
+    </main>
   </body>
 
 </html>
