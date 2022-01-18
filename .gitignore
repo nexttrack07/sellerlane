@@ -1,0 +1,7 @@
+*.pyc
+__pycache__/
+.env
+docker-compose.prod.yml
+db.sqlite3
+.DS_Store
+staticfiles/*

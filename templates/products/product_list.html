@@ -1,0 +1,21 @@
+{% extends '_base.html' %}
+
+{% block title %}
+  Products
+{% endblock title %}
+
+{% block content %}
+  {% for product in product_list %}
+    <div class="m-2 px-4 py-6 flex justify-between items-center border border-black">
+      <div class="flex-1">
+        <h2>
+          <a href="{{ product.get_absolute_url }}">{{ product.title }}</a>
+        </h2>
+      </div>
+      <div>
+        <span>{{ product.sale_price }}</span>
+        <span>{{ product.cost_per_unit }}</span>
+      </div>
+    </div>
+  {% endfor %}
+{% endblock content %}
