@@ -114,7 +114,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
-    "default": env.dj_db_url("DATABASE_URL", default="postgres://postgres@db/postgres")
+    "default": env.dj_db_url("DATABASE_URL", default="postgres://postgres:postgres@localhost/db")
 }
 
 
@@ -155,7 +155,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
-# STATICFILES_DIRS = (str(BASE_DIR.joinpath('static')),)
+STATICFILES_DIRS = (str(BASE_DIR.joinpath('static')), str(BASE_DIR.joinpath('theme/static')))
 STATIC_ROOT = str(BASE_DIR.joinpath('staticfiles'))
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
