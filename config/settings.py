@@ -1,5 +1,6 @@
 import os
 from environs import Env
+import dj_database_url
 from django.core.management.utils import get_random_secret_key
 from pathlib import Path
 
@@ -119,7 +120,12 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
-    "default": env.dj_db_url("DATABASE_URL", default="postgres://postgres:postgres@localhost/db")
+    'default': dj_database_url.config(
+        # Feel free to alter this value to suit your needs.
+        default='postgresql://postgres:postgres@localhost:5432/db',
+        conn_max_age=600
+    )
+
 }
 
 
