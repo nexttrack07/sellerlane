@@ -1,6 +1,7 @@
 import uuid
 from django.db import models
 from django.urls import reverse
+from django.template.defaultfilters import slugify
 
 
 class Product(models.Model):
@@ -20,6 +21,16 @@ class Product(models.Model):
     def __str__(self):
         return self.title
 
+
+def get_photo_filename(instance, filename):
+    title = instance.product.title 
+    slug = slugify(title)
+
+    return "product_photos/%s-%s" % (slug, filename)
+
+class Photos(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    photo = models.ImageField(upload_to=get_photo_filename, verbose_name="Image")
 
 class Quote(models.Model):
     product = models.ForeignKey(

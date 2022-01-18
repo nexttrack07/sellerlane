@@ -5,17 +5,23 @@
 {% endblock title %}
 
 {% block content %}
-  {% for product in product_list %}
-    <div class="m-2 px-4 py-6 flex justify-between items-center border border-black">
-      <div class="flex-1">
-        <h2>
-          <a href="{{ product.get_absolute_url }}">{{ product.title }}</a>
-        </h2>
+<div class="w-100 h-100 flex justify-center items-center">
+  {% if product_list|length > 0 %}
+    {% for product in product_list %}
+      <div class="m-2 px-4 py-6 flex justify-between items-center border border-black">
+        <div class="flex-1">
+          <h2>
+            <a href="{{ product.get_absolute_url }}">{{ product.title }}</a>
+          </h2>
+        </div>
+        <div>
+          <span>{{ product.sale_price }}</span>
+          <span>{{ product.cost_per_unit }}</span>
+        </div>
       </div>
-      <div>
-        <span>{{ product.sale_price }}</span>
-        <span>{{ product.cost_per_unit }}</span>
-      </div>
+    {% endfor %}
+  {% else %}
+    <a href="{% url 'product_create' %}" class="btn">Add Product</a>
+  {% endif %}
     </div>
-  {% endfor %}
 {% endblock content %}

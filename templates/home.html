@@ -5,16 +5,7 @@
 {% endblock title %}
 
 {% block content %}
-  <h1 class="py-10 px-10">Homepage</h1>
-  {% if user.is_authenticated %}
-    Hi
-    {{ user.email }}
-    <p>
-      <a href="{% url 'account_logout' %}">Log Out</a>
-    </p>
-  {% else %}
-    <p>You're not logged in</p>
-    <a href="{% url 'account_login' %}">Log In</a>
-    <a href="{% url 'account_signup' %}">Sign Up</a>
-  {% endif %}
+  <h2 class="text-center text-3xl font-bold">
+    Coming soon...
+  </h2>
 {% endblock content %}

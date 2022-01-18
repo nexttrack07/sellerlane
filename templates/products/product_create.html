@@ -1,0 +1,32 @@
+{% extends '_base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+  Add Product
+{% endblock title %}
+
+{% block content %}
+<div class="">
+  <h2 class="text-2xl text-center uppercase font-bold">Add Product</h2>
+  <div class="mt-5 shadow-lg py-16 px-24 border border-black">
+    <form id="product_form" action="" enctype="multipart/form-data" method="post" class="">
+      {% csrf_token %}
+      {% for hidden in productForm.hidden_fields %}
+        {{ hidden }}
+      {% endfor %}
+
+      {% for field in postForm %}
+        {{ field }} <br />
+      {% endfor %}
+
+      {{ formset.management_form }}
+      {% for form in formset %}
+          {{ form }}
+      {% endfor %}
+    <div class="text-center mt-10">
+      <button class="btn w-[250px]" type="submit">Add Product</button>
+    </div>
+    </form>
+  </div>
+</div>
+{% endblock content %}

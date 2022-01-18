@@ -5,3 +5,15 @@
 a:hover {
   @apply font-bold text-blue-600 underline;
 }
+
+.btn {
+  @apply border border-black px-5 py-5 hover:shadow-md hover:font-bold;
+}
+
+input {
+  @apply mb-10 border border-black w-full;
+}
+
+label {
+  @apply font-bold block mb-1 font-sans;
+}
