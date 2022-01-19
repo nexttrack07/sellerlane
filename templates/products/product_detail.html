@@ -1,14 +1,120 @@
 {% extends '_base.html' %}
 
 {% block title %}
-  {{ product.title }}
+{{ product.title }}
 {% endblock title %}
 
-{% block content %}
-  <div class="mx-auto my-10 w-3/4 border border-black">
-    <h2 class="my-5">{{ product.title }}</h2>
-    <p>{{ product.sale_price }}</p>
-    <p>{{ product.cost_per_unit }}</p>
-    <div class="my-5">{{ product.notes }}</div>
+{% block page_title %}
+<div class="pb-5 border-b border-gray-200 sm:flex sm:items-center sm:justify-between">
+  <h3 class="text-xl leading-6 font-medium text-gray-900">
+    {{ product.title }}
+  </h3>
+  <div class="mt-3 sm:mt-0 sm:ml-4">
+    <a href="{% url 'product_create' %}" type="button"
+      class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+      Edit Product
+    </a>
   </div>
+</div>
+{% endblock page_title %}
+
+
+{% block content %}
+
+<ul role="list" class="mb-10 grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8">
+  {% for image in product.photos_set.all %}
+  <li class="relative">
+    <div
+      class="group block w-full aspect-w-10 aspect-h-7 rounded-lg bg-gray-100 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-100 focus-within:ring-indigo-500 overflow-hidden">
+      <img src="{{ image.photo.url }}" alt="" class="object-cover pointer-events-none group-hover:opacity-75">
+    </div>
+  </li>
+  {% endfor %}
+</ul>
+
+<div class="bg-white shadow overflow-hidden sm:rounded-lg">
+  <div class="px-4 py-5 sm:px-6">
+    <h3 class="text-lg leading-6 font-medium text-gray-900">
+      Product Information
+    </h3>
+    <p class="mt-1 max-w-2xl text-sm text-gray-500">
+      Details and possible projections
+    </p>
+  </div>
+  <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
+    <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
+      <div class="sm:col-span-1">
+        <dt class="text-sm font-medium text-gray-500">
+          Sale price
+        </dt>
+        <dd class="mt-1 text-sm text-gray-900">
+          ${{ product.sale_price }}
+        </dd>
+      </div>
+      <div class="sm:col-span-1">
+        <dt class="text-sm font-medium text-gray-500">
+          Cost per unit
+        </dt>
+        <dd class="mt-1 text-sm text-gray-900">
+          ${{ product.cost_per_unit }}
+        </dd>
+      </div>
+      <div class="sm:col-span-1">
+        <dt class="text-sm font-medium text-gray-500">
+          Profit per unit
+        </dt>
+        <dd class="mt-1 text-sm text-gray-900">
+          $6.50
+        </dd>
+      </div>
+      <div class="sm:col-span-1">
+        <dt class="text-sm font-medium text-gray-500">
+          ROI
+        </dt>
+        <dd class="mt-1 text-sm text-gray-900">
+          340%
+        </dd>
+      </div>
+      <div class="sm:col-span-2">
+        <dt class="text-sm font-medium text-gray-500">
+          Notes
+        </dt>
+        <dd class="mt-1 text-sm text-gray-900">
+          {{ product.notes }}
+        </dd>
+      </div>
+      {% if product.quotes.all > 0 %}
+      <div class="sm:col-span-2">
+        <dt class="text-sm font-medium text-gray-500">
+          Quotes
+        </dt>
+        <dd class="mt-1 text-sm text-gray-900">
+          <ul role="list" class="border border-gray-200 rounded-md divide-y divide-gray-200">
+            {% for quote in product.quotes.all %}
+            <li class="pl-3 pr-4 py-3 flex items-center justify-between text-sm">
+              <div class="w-0 flex-1 flex items-center">
+                <!-- Heroicon name: solid/paper-clip -->
+                <svg class="flex-shrink-0 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                  fill="currentColor" aria-hidden="true">
+                  <path fill-rule="evenodd"
+                    d="M8 4a3 3 0 00-3 3v4a5 5 0 0010 0V7a1 1 0 112 0v4a7 7 0 11-14 0V7a5 5 0 0110 0v4a3 3 0 11-6 0V7a1 1 0 012 0v4a1 1 0 102 0V7a3 3 0 00-3-3z"
+                    clip-rule="evenodd" />
+                </svg>
+                <span class="ml-2 flex-1 w-0 truncate">
+                  {{ quote.supplier }}
+                </span>
+              </div>
+              <div class="ml-4 flex-shrink-0">
+                <span>{{ quote.cost_per_unit }}</span>
+                <span>{{ quote.misc_fees }}</span>
+              </div>
+            </li>
+            {% endfor %}
+          </ul>
+        </dd>
+      </div>
+      {% endif %}
+    </dl>
+  </div>
+</div>
 {% endblock content %}
