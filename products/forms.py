@@ -26,8 +26,8 @@ class ProductForm(ModelForm):
         fields=("title", "sale_price", "cost_per_unit", "notes")
         widgets = {
             'title': forms.TextInput(attrs=get_input_attrs()),
-            'sale_price': forms.TextInput(attrs=get_input_attrs(other={ 'style': 'padding-left: 24px;', 'type': 'number'})),
-            'cost_per_unit': forms.TextInput(attrs=get_input_attrs(other={ 'style': 'padding-left: 24px;', 'type': 'number'})),
+            'sale_price': forms.TextInput(attrs=get_input_attrs(other={ 'style': 'padding-left: 24px;'})),
+            'cost_per_unit': forms.TextInput(attrs=get_input_attrs(other={ 'style': 'padding-left: 24px;'})),
             'notes': forms.Textarea(attrs=get_textarea_attrs()),
         }
 

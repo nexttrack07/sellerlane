@@ -22,34 +22,23 @@ class ProductDetailView(DetailView):
 class ProductCreateView(CreateView):
     template_name = "products/product_create.html"
     form_class = ProductForm
+    model = Product
     context_object_name = 'product'
 
+    def post(self, request):
+        form = self.get_form()
+        if not form.is_valid():
+            return self.form_invalid()
 
-def create_product(request):
-
-    if request.method == 'POST':
-        productForm = ProductForm(request.POST)
         images = request.FILES.getlist('images')
-        
+        product = form.save(commit=False)
+        product.save()
 
-        if productForm.is_valid():
-            product_form = productForm.save(commit=False)
-            product_form.save()
+        for image in images:
+            photo = Photos.objects.create(
+                product=product,
+                photo=image
+            )
 
-            for image in images:
-                photo = Photos.objects.create(
-                    product=product_form,
-                    photo=image
-                )
-
-            
-            messages.success(request, 'Product added successfully!')
-            return HttpResponseRedirect("/products")
-        else:
-            print(productForm.errors)
-    
-    else:
-        productForm = ProductForm()
-    
-    ctx = { 'productForm': productForm }
-    return render(request, 'products/product_create.html', ctx)
+        messages.success(request, "Product added successfully!")
+        return HttpResponseRedirect("/products")
