@@ -26,38 +26,30 @@ class ProductCreateView(CreateView):
 
 
 def create_product(request):
-    ImageFormSet = modelformset_factory(
-        Photos,
-        form=PhotoForm,
-        extra=6
-    )
 
     if request.method == 'POST':
         productForm = ProductForm(request.POST)
-        formset = ImageFormSet(
-            request.POST,
-            request.FILES,
-            queryset=Photos.objects.none()
-        )
+        images = request.FILES.getlist('images')
+        
 
-        if productForm.is_valid() and formset.is_valid():
+        if productForm.is_valid():
             product_form = productForm.save(commit=False)
             product_form.save()
 
-            for form in formset.cleaned_data:
-                if form:
-                    image = form['image']
-                    photo = Photos(product=product_form, image=image)
-                    photo.save()
+            for image in images:
+                photo = Photos.objects.create(
+                    product=product_form,
+                    photo=image
+                )
+
             
             messages.success(request, 'Product added successfully!')
             return HttpResponseRedirect("/products")
         else:
-            print(productForm.errors, formset.errors)
+            print(productForm.errors)
     
     else:
         productForm = ProductForm()
-        formset = ImageFormSet(queryset=Photos.objectsj.none())
     
-    ctx = { 'productForm': productForm, 'formset': formset }
+    ctx = { 'productForm': productForm }
     return render(request, 'products/product_create.html', ctx)

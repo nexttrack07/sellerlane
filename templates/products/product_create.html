@@ -15,14 +15,13 @@
         {{ hidden }}
       {% endfor %}
 
-      {% for field in postForm %}
-        {{ field }} <br />
-      {% endfor %}
+      {{ productForm|crispy }}
 
-      {{ formset.management_form }}
-      {% for form in formset %}
-          {{ form }}
-      {% endfor %}
+      <div class="mt-10">
+        <label>Upload Images</label>
+        <input required name="images" type="file" multiple />
+      </div>
+
     <div class="text-center mt-10">
       <button class="btn w-[250px]" type="submit">Add Product</button>
     </div>

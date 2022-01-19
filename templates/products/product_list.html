@@ -1,27 +1,37 @@
 {% extends '_base.html' %}
 
 {% block title %}
-  Products
+Products
 {% endblock title %}
 
 {% block content %}
-<div class="w-100 h-100 flex justify-center items-center">
-  {% if product_list|length > 0 %}
+<div class="container">
+  <div class="flex justify-between items-center border-b border-black p-4">
+    <h2 class="text-3xl font-bold">Products</h2>
+    <a class="inline-block p-3 border border-black" href="{% url 'product_create' %}">Add Product</a>
+  </div>
+  <br>
+  <br>
+  <div class="w-100 h-100 flex justify-center items-center">
+    {% if product_list|length > 0 %}
     {% for product in product_list %}
-      <div class="m-2 px-4 py-6 flex justify-between items-center border border-black">
-        <div class="flex-1">
-          <h2>
-            <a href="{{ product.get_absolute_url }}">{{ product.title }}</a>
-          </h2>
-        </div>
-        <div>
-          <span>{{ product.sale_price }}</span>
-          <span>{{ product.cost_per_unit }}</span>
-        </div>
+    <div class="m-2 px-4 py-6 w-[300px] border border-black">
+      <img class="w-full" src="{{ product.photos_set.all.0.photo.url }}" alt="product-photos" />
+      <br>
+      <h2 class="font-bold text-xl">
+        <a href="{{ product.get_absolute_url }}">{{ product.title }}</a>
+      </h2>
+      <br>
+      <div>
+        <div>Price: ${{ product.sale_price }}</div>
+        <div>CPU: ${{ product.cost_per_unit }}</div>
       </div>
-    {% endfor %}
-  {% else %}
-    <a href="{% url 'product_create' %}" class="btn">Add Product</a>
-  {% endif %}
     </div>
+    {% endfor %}
+    {% else %}
+    <a href="{% url 'product_create' %}" class="btn">Add Product</a>
+    {% endif %}
+  </div>
+</div>
+</div>
 {% endblock content %}
