@@ -1,7 +1,7 @@
-from django.views.generic import ListView, DetailView, CreateView
+from django.urls import reverse
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.shortcuts import render
 from django.forms import modelformset_factory
-# from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from products.forms import ProductForm, PhotoForm
@@ -42,3 +42,40 @@ class ProductCreateView(CreateView):
 
         messages.success(request, "Product added successfully!")
         return HttpResponseRedirect("/products")
+
+class ProductUpdateView(UpdateView):
+    model = Product
+    form_class = ProductForm
+    success_url = "/products"
+
+    def post(self, request, *args, **kwargs):
+        form = self.get_form()
+        if not form.is_valid():
+            return self.form_invalid()
+
+        images = request.FILES.getlist('images')
+        product = self.get_object()
+        form.save(commit=False)
+
+        for image in images:
+            photo = Photos.objects.create(
+                product=product,
+                photo=image
+            )
+
+        messages.success(request, "Product added successfully!")
+        return HttpResponseRedirect("/products")
+
+
+class ProductPhotoDeleteView(DeleteView):
+    model = Photos
+
+    def get_success_url(self) -> str:
+        self.object = self.get_object()
+        success_url = reverse('product_update', args=(self.object.product.id,))
+        return success_url
+
+
+class ProductDeleteView(DeleteView):
+    model = Product
+    success_url = 'products/'
