@@ -24,9 +24,9 @@ Products
     {% if product_list|length > 0 %}
     <ul role="list" class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
       {% for product in product_list %}
-      <a href="{% url 'product_detail' product.id %}">
-        <li class="bg-white overflow-hidden shadow rounded-lg divide-y divide-gray-200">
-          <div class="px-4 py-5 font-bold sm:px-6">
+      <li class="bg-white overflow-hidden shadow rounded-lg divide-y divide-gray-200 hover:shadow-xl">
+        <a class="" href="{% url 'product_detail' product.id %}">
+          <div class="px-4 py-5 font-bold sm:px-6 capitalize">
             {{ product.title }}
           </div>
           <div class="px-4 py-5 sm:p-6">
@@ -38,8 +38,8 @@ Products
               <div>CPU: ${{ product.cost_per_unit }}</div>
             </div>
           </div>
-        </li>
-      </a>
+        </a>
+      </li>
       {% endfor %}
     </ul>
     {% else %}

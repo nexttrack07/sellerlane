@@ -2,6 +2,7 @@ import uuid
 from django.db import models
 from django.urls import reverse
 from django.template.defaultfilters import slugify
+from ckeditor.fields import RichTextField
 
 
 class Product(models.Model):
@@ -13,7 +14,7 @@ class Product(models.Model):
     title = models.CharField(max_length=250)
     sale_price = models.DecimalField(max_digits=6, decimal_places=2)
     cost_per_unit = models.DecimalField(max_digits=6, decimal_places=2)
-    notes = models.TextField()
+    notes = RichTextField()
 
     def get_absolute_url(self):
         return reverse("product_detail", args=[str(self.id)])

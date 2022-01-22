@@ -2,10 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-a:hover {
-  @apply font-bold text-blue-600 underline;
-}
-
 .btn {
   @apply border border-black px-5 py-5 hover:shadow-md hover:font-bold;
 }

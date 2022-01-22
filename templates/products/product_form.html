@@ -47,6 +47,7 @@ Add Product
         {% for hidden in form.hidden_fields %}
         {{ hidden }}
         {% endfor %}
+        {{ form.media }}
 
         <div>
           <label for="email" class="block text-sm font-medium text-gray-700">Product Title</label>
@@ -129,4 +130,6 @@ Add Product
     </div>
   </form>
 </div>
+
+
 {% endblock content %}
