@@ -1,25 +1,27 @@
 from django.urls import reverse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from django.shortcuts import render
-from django.forms import modelformset_factory
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib import messages
 from django.http import HttpResponseRedirect
-from products.forms import ProductForm, PhotoForm
+from products.forms import ProductForm
 from products.models import Product, Photos
 
 
-class ProductListView(ListView):
+class LoginRedirectMixin(LoginRequiredMixin, PermissionRequiredMixin):
+    login_url = '/accounts/login'
+
+class ProductListView(LoginRedirectMixin, ListView):
     model = Product
     template_name = 'products/product_list.html'
     context_object_name = 'product_list'
 
 
-class ProductDetailView(DetailView):
+class ProductDetailView(LoginRedirectMixin, DetailView):
     model = Product
     template_name = 'products/product_detail.html'
     context_object_name = 'product'
 
-class ProductCreateView(CreateView):
+class ProductCreateView(LoginRedirectMixin, CreateView):
     template_name = "products/product_create.html"
     form_class = ProductForm
     model = Product
@@ -41,33 +43,24 @@ class ProductCreateView(CreateView):
             )
 
         messages.success(request, "Product added successfully!")
-        return HttpResponseRedirect("/products")
+        return HttpResponseRedirect(f"/products/{product.id}")
 
-class ProductUpdateView(UpdateView):
+class ProductUpdateView(LoginRedirectMixin, UpdateView):
     model = Product
     form_class = ProductForm
-    success_url = "/products"
 
     def post(self, request, *args, **kwargs):
-        form = self.get_form()
-        if not form.is_valid():
-            return self.form_invalid()
-
-        images = request.FILES.getlist('images')
         product = self.get_object()
-        form.save(commit=False)
-
+        images = request.FILES.getlist('images')
         for image in images:
             photo = Photos.objects.create(
                 product=product,
                 photo=image
             )
+        return super().post(request, *args, **kwargs) 
 
-        messages.success(request, "Product added successfully!")
-        return HttpResponseRedirect("/products")
-
-
-class ProductPhotoDeleteView(DeleteView):
+        
+class ProductPhotoDeleteView(LoginRedirectMixin, DeleteView):
     model = Photos
 
     def get_success_url(self) -> str:
@@ -76,6 +69,6 @@ class ProductPhotoDeleteView(DeleteView):
         return success_url
 
 
-class ProductDeleteView(DeleteView):
+class ProductDeleteView(LoginRedirectMixin, DeleteView):
     model = Product
-    success_url = 'products/'
+    success_url = '/products/'

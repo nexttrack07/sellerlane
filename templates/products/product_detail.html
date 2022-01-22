@@ -52,10 +52,13 @@
       </h2>
     </div>
     <div class="mt-4 flex-shrink-0 flex md:mt-0 md:ml-4">
-      <a href="{% url 'product_delete' product.id %}"
-        class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-indigo-500">
-        Delete
-      </a>
+      <form method="POST" action="{% url 'product_delete' product.id %}">
+        {% csrf_token %}
+        <button type="submit"
+          class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-indigo-500">
+          Delete
+        </button>
+      </form>
       <a href="{% url 'product_update' product.id %}"
         class="ml-3 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-500 hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-indigo-500">
         Edit
@@ -129,7 +132,7 @@
           Notes
         </dt>
         <dd class="mt-1 text-sm text-gray-900">
-          {{ product.notes }}
+          {{ product.notes | safe }}
         </dd>
       </div>
       {% if product.quotes.all > 0 %}

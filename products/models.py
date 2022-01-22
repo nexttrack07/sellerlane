@@ -1,6 +1,7 @@
 import uuid
 from django.db import models
 from django.urls import reverse
+from django.contrib.auth import get_user_model
 from django.template.defaultfilters import slugify
 from ckeditor.fields import RichTextField
 
@@ -15,6 +16,7 @@ class Product(models.Model):
     sale_price = models.DecimalField(max_digits=6, decimal_places=2)
     cost_per_unit = models.DecimalField(max_digits=6, decimal_places=2)
     notes = RichTextField()
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
 
     def get_absolute_url(self):
         return reverse("product_detail", args=[str(self.id)])
